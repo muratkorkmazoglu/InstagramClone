@@ -70,25 +70,27 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/homeViewPager"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appbar"
                 app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"/>
-        <View android:layout_width="0dp" android:layout_height="2dp"
-              android:background="@color/golgelik"
-              app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/homeViewPager"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"/>
-        <android.support.design.widget.BottomNavigationView android:layout_width="match_parent"
-                                                            android:layout_height="50dp"
-                                                            app:layout_constraintBottom_toBottomOf="parent"
-                                                            app:layout_constraintStart_toStartOf="parent"
-                                                            app:layout_constraintEnd_toEndOf="parent"
-                                                            app:layout_constraintTop_toBottomOf="@+id/homeViewPager"
-                                                            android:id="@+id/bottomNavigationView">
+        <View
+                android:layout_width="0dp" android:layout_height="2dp"
+                android:background="@color/golgelik"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toBottomOf="@+id/homeViewPager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"/>
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/homeViewPager"
+                app:menu="@menu/bottom_navigation_menu"
+                android:id="@+id/bottomNavigationView">
 
-        </android.support.design.widget.BottomNavigationView>
+        </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
     </android.support.constraint.ConstraintLayout>
 
