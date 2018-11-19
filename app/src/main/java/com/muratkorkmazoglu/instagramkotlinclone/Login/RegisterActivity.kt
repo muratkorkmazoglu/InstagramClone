@@ -2,22 +2,27 @@ package com.muratkorkmazoglu.instagramkotlinclone.Login
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.FragmentManager
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import com.muratkorkmazoglu.instagramkotlinclone.R
 import com.muratkorkmazoglu.instagramkotlinclone.utils.EventbusDataEvents
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
+
+    lateinit var manager: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
+        manager = supportFragmentManager
+        manager.addOnBackStackChangedListener(this)
         init();
     }
 
@@ -28,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
             etGirisYontemi.setText("")
             etGirisYontemi.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             etGirisYontemi.setHint("E-Posta")
-            btnIleri.isEnabled=false
+            btnIleri.isEnabled = false
             btnIleri.isEnabled = false
             btnIleri.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.sonukmavi))
             btnIleri.setBackgroundResource(R.drawable.register_button)
@@ -39,7 +44,7 @@ class RegisterActivity : AppCompatActivity() {
             etGirisYontemi.setText("")
             etGirisYontemi.inputType = InputType.TYPE_CLASS_NUMBER
             etGirisYontemi.setHint("Telefon")
-            btnIleri .isEnabled=false
+            btnIleri.isEnabled = false
             btnIleri.isEnabled = false
             btnIleri.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.sonukmavi))
             btnIleri.setBackgroundResource(R.drawable.register_button)
@@ -56,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (start + before + count >= 10) {
+                if (s!!.length >= 10) {
                     btnIleri.isEnabled = true
                     btnIleri.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.beyaz))
                     btnIleri.setBackgroundResource(R.drawable.register_button_aktif)
@@ -70,31 +75,81 @@ class RegisterActivity : AppCompatActivity() {
         })
 
         btnIleri.setOnClickListener {
-            if (etGirisYontemi.hint.toString().equals("Telefon")){
-                loginRoot.visibility=View.GONE
-                loginContainer.visibility=View.VISIBLE
-                var transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.loginContainer,TelefonKoduGirFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
+            if (etGirisYontemi.hint.toString().equals("Telefon")) {
 
-                EventBus.getDefault().postSticky(EventbusDataEvents.TelefonNoGonder(etGirisYontemi.text.toString()))
 
-            }else{
-                loginRoot.visibility=View.GONE
-                loginContainer.visibility=View.VISIBLE
-                var transaction = supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.loginContainer,EmailGirisYontemi())
-                transaction.addToBackStack(null)
-                transaction.commit()
-                EventBus.getDefault().postSticky(EventbusDataEvents.EmailGonder(etGirisYontemi.text.toString()))
+                if (isValidTelefon(etGirisYontemi.text.toString())) {
+                    loginRoot.visibility = View.GONE
+                    loginContainer.visibility = View.VISIBLE
+                    var transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.loginContainer, TelefonKoduGirFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+
+                    EventBus.getDefault().postSticky(
+                        EventbusDataEvents.KayitBilgileriniGonder(
+                            etGirisYontemi.text.toString(),
+                            null,
+                            null,
+                            null,
+                            false
+                        )
+                    )
+                } else {
+                    Toast.makeText(this, "Lütfen Geçerli Bir Telefon Numarası Giriniz", Toast.LENGTH_SHORT).show()
+                }
+
+            } else {
+                if (isValidEmail(etGirisYontemi.text.toString())) {
+                    loginRoot.visibility = View.GONE
+                    loginContainer.visibility = View.VISIBLE
+                    var transaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.loginContainer, KayitFragment())
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                    EventBus.getDefault().postSticky(
+                        EventbusDataEvents.KayitBilgileriniGonder(
+                            null,
+                            etGirisYontemi.text.toString(),
+                            null,
+                            null,
+                            true
+                        )
+                    )
+                }else {
+                    Toast.makeText(this, "Lütfen Geçerli Bir E-Mail Giriniz", Toast.LENGTH_SHORT).show()
+
+                }
+
             }
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        loginRoot.visibility=View.VISIBLE
+    override fun onBackStackChanged() {
+
+        if (manager.backStackEntryCount == 0) {
+
+            loginRoot.visibility = View.VISIBLE
+        }
+
+    }
+
+    fun isValidEmail(kontrolEdilecekMail: String): Boolean {
+
+        if (kontrolEdilecekMail == null) {
+            return false
+        }
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(kontrolEdilecekMail).matches()
+    }
+
+    fun isValidTelefon(kontrolEdilecekTelefon: String): Boolean {
+
+        if (kontrolEdilecekTelefon == null || (kontrolEdilecekTelefon.length > 14)) {
+            return false
+        }
+
+        return android.util.Patterns.PHONE.matcher(kontrolEdilecekTelefon).matches()
     }
 
 }
