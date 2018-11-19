@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.muratkorkmazoglu.instagramkotlinclone">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -10,11 +12,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".Home.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".News.NewsActivity">
         </activity>
@@ -25,6 +23,15 @@
         <activity android:name=".Share.ShareActivity">
         </activity>
         <activity android:name=".Profile.ProfileSettingsActivity">
+        </activity>
+        <activity android:name=".Login.LoginActivity">
+        </activity>
+        <activity android:name=".Login.RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

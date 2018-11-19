@@ -5,6 +5,8 @@ import android.os.Bundle
 import com.muratkorkmazoglu.instagramkotlinclone.R
 import com.muratkorkmazoglu.instagramkotlinclone.utils.BottomNavigatinViewHelper
 import com.muratkorkmazoglu.instagramkotlinclone.utils.HomePagerAdapter
+import com.muratkorkmazoglu.instagramkotlinclone.utils.UniversalImageLoader
+import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -15,6 +17,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        initImageLoader()
         setupNavigationView();
         setupHomeViewPager();
     }
@@ -34,5 +37,9 @@ class HomeActivity : AppCompatActivity() {
         var menu = bottomNavigationView.menu;
         var menuItem = menu.getItem(activity_no);
         menuItem.isChecked = true;
+    }
+    private fun initImageLoader() {
+        var universalImageLoader = UniversalImageLoader(this)
+        ImageLoader.getInstance().init(universalImageLoader.config)
     }
 }
