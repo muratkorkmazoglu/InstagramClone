@@ -7,87 +7,24 @@
         android:layout_height="match_parent"
         tools:context=".Login.LoginActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView android:layout_width="150dp"
-                                                  android:layout_height="150dp"
-                                                  android:src="@drawable/ic_profile_logo"
-                                                  app:layout_constraintStart_toStartOf="parent"
-                                                  android:layout_marginStart="8dp"
-                                                  app:layout_constraintEnd_toEndOf="parent"
-                                                  android:layout_marginEnd="8dp" android:layout_marginTop="32dp"
-                                                  app:layout_constraintTop_toTopOf="parent"
-                                                  app:civ_border_color="@color/siyah"
-                                                  app:civ_border_width="2dp"
-                                                  android:id="@+id/imgProfil"/>
-    <TextView
-            android:text="TELEFON"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvTelefon"
-            android:textColor="@color/siyah" android:textSize="18sp" android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/imgProfil" android:layout_marginStart="72dp"
-            app:layout_constraintStart_toStartOf="parent"/>
-    <TextView
-            android:text="E-POSTA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView18" android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@+id/imgProfil" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="72dp" android:textSize="18sp"
-    />
-    <View android:layout_width="180dp" android:layout_height="2dp" android:background="@color/siyah"
-          android:id="@+id/viewEposta"
-          android:visibility="gone"
-          app:layout_constraintEnd_toEndOf="@+id/textView18" app:layout_constraintStart_toStartOf="@+id/textView18"
-          app:layout_constraintHorizontal_bias="0.44" android:layout_marginTop="8dp"
-          app:layout_constraintTop_toBottomOf="@+id/textView18"/>
-    <View android:layout_width="360dp" android:layout_height="2dp" android:background="@color/golgelik"
-          android:id="@+id/uzunGolgelik"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintHorizontal_bias="0.49"
-          android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/tvTelefon"/>
-    <View android:layout_width="180dp" android:layout_height="2dp" android:background="@color/siyah"
-          android:id="@+id/viewTelefon" app:layout_constraintStart_toStartOf="@+id/tvTelefon"
-          app:layout_constraintEnd_toEndOf="@+id/tvTelefon" android:layout_marginTop="8dp"
-          app:layout_constraintTop_toBottomOf="@+id/tvTelefon" app:layout_constraintHorizontal_bias="0.489"/>
-    <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:background="@drawable/register_edit_text"
-            android:padding="12dp"
-            android:ems="10"
-            android:id="@+id/editText5" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="@+id/uzunGolgelik" android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent" android:hint="Telefon"/>
-    <Button
-            android:text="İleri"
-            android:layout_width="0dp"
-            android:textAllCaps="false"
-            android:textColor="@color/sonukmavi"
-            android:background="@drawable/register_button"
-            android:layout_height="wrap_content"
-            android:id="@+id/button" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/editText5"/>
+
     <View android:layout_height="2dp" android:layout_width="0dp" android:id="@+id/golgelik1"
           android:background="@color/golgelik"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="50dp"
           app:layout_constraintBottom_toBottomOf="parent"/>
     <TextView
-            android:text="Hesabın zaten var mı?"
+            android:text="Hesabın yok mu?"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView12"
             app:layout_constraintEnd_toStartOf="@+id/viewEposta" android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="80dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginStart="110dp"
             android:layout_marginEnd="80dp" app:layout_constraintTop_toBottomOf="@+id/golgelik1"
             android:layout_marginTop="16dp"/>
     <TextView
-            android:text="Giriş Yap"
+            android:text="Kaydol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvGirisYap" android:textStyle="bold"
@@ -95,4 +32,44 @@
             android:layout_marginStart="10dp" app:layout_constraintStart_toEndOf="@+id/textView12"
             android:layout_marginBottom="16dp" app:layout_constraintTop_toBottomOf="@+id/golgelik1"
             android:layout_marginTop="16dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" app:srcCompat="@drawable/logo"
+            android:id="@+id/imageView" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="72dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.497"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:padding="16dp"
+            android:background="@drawable/register_edit_text"
+            android:id="@+id/etEmailTelorUsername" android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            android:hint="Telefon Numarası, E-posta veya Kullanıcı Adı"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:padding="16dp"
+            android:background="@drawable/register_edit_text"
+            android:id="@+id/etSifre"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="16dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/etEmailTelorUsername" android:hint="Şifre"/>
+    <Button
+            android:text="Giriş Yap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnGirisYap" android:layout_marginStart="16dp"
+            android:textAllCaps="false"
+            android:enabled="false"
+            android:textColor="@color/mavi"
+            android:background="@drawable/register_button"
+            app:layout_constraintTop_toBottomOf="@+id/etSifre" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp" android:layout_marginTop="16dp"/>
 </android.support.constraint.ConstraintLayout>
