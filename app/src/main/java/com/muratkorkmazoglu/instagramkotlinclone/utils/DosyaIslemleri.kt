@@ -1,6 +1,8 @@
 package com.muratkorkmazoglu.instagramkotlinclone.utils
 
 import java.io.File
+import java.util.*
+import kotlin.Comparator
 
 class DosyaIslemleri {
     companion object {
@@ -12,7 +14,21 @@ class DosyaIslemleri {
             var klasordekiTumDosyalar = file.listFiles()
 
             if (klasordekiTumDosyalar != null) {
-                for (i in 0..klasordekiTumDosyalar.size-1) {
+
+                if (klasordekiTumDosyalar.size > 1) {
+                    Arrays.sort(klasordekiTumDosyalar, object : Comparator<File> {
+                        override fun compare(o1: File?, o2: File?): Int {
+                            if (o1!!.lastModified() > o2!!.lastModified()) {
+                                return -1
+                            } else {
+                                return 1
+                            }
+                        }
+
+                    })
+                }
+
+                for (i in 0..klasordekiTumDosyalar.size - 1) {
                     if (klasordekiTumDosyalar[i].isFile) {
                         var okunanDosyaYolu = klasordekiTumDosyalar[i].absolutePath.toString()
                         var dosyaTuru = okunanDosyaYolu.substring(okunanDosyaYolu.lastIndexOf("."))

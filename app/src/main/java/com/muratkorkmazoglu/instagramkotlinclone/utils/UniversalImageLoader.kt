@@ -28,6 +28,8 @@ class UniversalImageLoader(var mContext: Context?) {
                 .cacheOnDisk(true).cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
                 .displayer(FadeInBitmapDisplayer(400)).build();
 
             return ImageLoaderConfiguration.Builder(mContext).defaultDisplayImageOptions(defaultOptions)
