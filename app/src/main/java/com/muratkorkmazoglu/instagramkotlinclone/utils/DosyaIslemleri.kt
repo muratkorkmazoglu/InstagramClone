@@ -1,5 +1,11 @@
 package com.muratkorkmazoglu.instagramkotlinclone.utils
 
+import android.os.AsyncTask
+import android.os.Environment
+import android.support.v4.app.Fragment
+import com.iceteck.silicompressorr.SiliCompressor
+import com.muratkorkmazoglu.instagramkotlinclone.Profile.YukleniyorFragment
+import com.muratkorkmazoglu.instagramkotlinclone.Share.ShareNextFragment
 import java.io.File
 import java.util.*
 import kotlin.Comparator
@@ -45,5 +51,41 @@ class DosyaIslemleri {
 
             return tumDosyalar
         }
+
+        fun compressResimDosya(fragment: Fragment, secilenResimYolu: String?) {
+            ResimCompressAsyncTask(fragment).execute(secilenResimYolu)
+
+        }
+    }
+
+    internal class ResimCompressAsyncTask(fragment: Fragment) : AsyncTask<String, String, String>() {
+        var compressFrament = YukleniyorFragment()
+        var mFragment = fragment
+
+        override fun doInBackground(vararg params: String?): String {
+            var yeniOlusanDosyaKlasoru =
+                File(Environment.getExternalStorageDirectory().absolutePath + "/DCIM/compressed/")
+            var yeniDosyaYolu = SiliCompressor.with(mFragment.context).compress(params[0], yeniOlusanDosyaKlasoru)
+
+
+            return yeniDosyaYolu
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            compressFrament.show(mFragment.activity!!.supportFragmentManager, "compressDialog")
+            compressFrament.isCancelable = false
+        }
+
+        override fun onPostExecute(result: String?) {
+
+            compressFrament.dismiss()
+            (mFragment as ShareNextFragment).uploadToStorage(result)
+
+            super.onPostExecute(result)
+
+        }
+
     }
 }

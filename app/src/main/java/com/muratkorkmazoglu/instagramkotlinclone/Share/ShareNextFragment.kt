@@ -1,6 +1,7 @@
 package com.muratkorkmazoglu.instagramkotlinclone.Share
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.muratkorkmazoglu.instagramkotlinclone.Model.Posts
 import com.muratkorkmazoglu.instagramkotlinclone.Profile.YukleniyorFragment
 
 import com.muratkorkmazoglu.instagramkotlinclone.R
+import com.muratkorkmazoglu.instagramkotlinclone.utils.DosyaIslemleri
 import com.muratkorkmazoglu.instagramkotlinclone.utils.EventbusDataEvents
 import com.muratkorkmazoglu.instagramkotlinclone.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.fragment_share_next.*
@@ -39,7 +41,7 @@ import java.net.URI
 class ShareNextFragment : Fragment() {
 
     var secilenResimYolu: String? = null
-    lateinit var photoURI: Uri
+    var dosyaTuruResimMi: Boolean? = null
     lateinit var mAuth: FirebaseAuth
     lateinit var mRef: DatabaseReference
     lateinit var mUser: FirebaseUser
@@ -52,7 +54,7 @@ class ShareNextFragment : Fragment() {
 
         UniversalImageLoader.setImage(secilenResimYolu!!, view.imgSecilenResim, null, "file:/")
 
-        photoURI = Uri.parse("file://" + secilenResimYolu)
+        //photoURI = Uri.parse("file://" + secilenResimYolu)
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
@@ -61,18 +63,27 @@ class ShareNextFragment : Fragment() {
 
 
         view.tvIleriButton.setOnClickListener {
-            dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragment")
-            dialogYukleniyor.isCancelable = false
 
-            uploadToStorage()
+
+            if (dosyaTuruResimMi!!) {
+                DosyaIslemleri.compressResimDosya(this, secilenResimYolu)
+            } else {
+
+            }
+
         }
 
         return view
     }
 
-    private fun uploadToStorage() {
+    fun uploadToStorage(filePath: String?) {
 
-        var uploadTask = mStorage.child("users").child(mUser.uid).child(photoURI.lastPathSegment).putFile(photoURI)
+        var photoUri = Uri.parse("file://" + filePath.toString())
+
+        dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragment")
+        dialogYukleniyor.isCancelable = false
+
+        var uploadTask = mStorage.child("users").child(mUser.uid).child(photoUri.lastPathSegment).putFile(photoUri)
             .addOnCompleteListener(object : OnCompleteListener<UploadTask.TaskSnapshot> {
                 override fun onComplete(p0: Task<UploadTask.TaskSnapshot>) {
                     if (p0.isSuccessful) {
@@ -91,8 +102,8 @@ class ShareNextFragment : Fragment() {
             }).addOnProgressListener {
                 object : OnProgressListener<UploadTask.TaskSnapshot> {
                     override fun onProgress(p0: UploadTask.TaskSnapshot?) {
-                        var progress = 100 * (p0!!.bytesTransferred / p0!!.totalByteCount)
-                        dialogYukleniyor.tvBilgi.text = "%"+progress+" yüklendi..."
+                        var progress = 100.0 * (p0!!.bytesTransferred / p0!!.totalByteCount)
+                        dialogYukleniyor.tvBilgi.text = "%" + progress.toInt().toString() + "yüklendi..."
                     }
 
                 }
@@ -110,6 +121,7 @@ class ShareNextFragment : Fragment() {
     @Subscribe(sticky = true)
     internal fun onSecilenResimEvent(secilenResim: EventbusDataEvents.PaylasilacakResmiGonder) {
         secilenResimYolu = secilenResim.resimYolu!!
+        dosyaTuruResimMi = secilenResim.dosyaTipiResimMi
     }
 
     override fun onAttach(context: Context?) {
