@@ -46,7 +46,7 @@ class ShareNextFragment : Fragment() {
     lateinit var mRef: DatabaseReference
     lateinit var mUser: FirebaseUser
     lateinit var mStorage: StorageReference
-    var dialogYukleniyor = YukleniyorFragment()
+    var dialogYukleniyor = CompressAndLoadingFragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -68,6 +68,7 @@ class ShareNextFragment : Fragment() {
             if (dosyaTuruResimMi!!) {
                 DosyaIslemleri.compressResimDosya(this, secilenResimYolu)
             } else {
+                DosyaIslemleri.compressVideoDosya(this, secilenResimYolu!!)
 
             }
 
@@ -80,7 +81,7 @@ class ShareNextFragment : Fragment() {
 
         var photoUri = Uri.parse("file://" + filePath.toString())
 
-        dialogYukleniyor.show(activity!!.supportFragmentManager, "yukleniyorFragment")
+        dialogYukleniyor.show(activity!!.supportFragmentManager, "comnpressFragment")
         dialogYukleniyor.isCancelable = false
 
         var uploadTask = mStorage.child("users").child(mUser.uid).child(photoUri.lastPathSegment).putFile(photoUri)

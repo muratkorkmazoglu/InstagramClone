@@ -3,6 +3,7 @@ package com.muratkorkmazoglu.instagramkotlinclone.utils
 import android.os.AsyncTask
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.util.Log
 import com.iceteck.silicompressorr.SiliCompressor
 import com.muratkorkmazoglu.instagramkotlinclone.Profile.YukleniyorFragment
 import com.muratkorkmazoglu.instagramkotlinclone.Share.ShareNextFragment
@@ -37,6 +38,7 @@ class DosyaIslemleri {
                 for (i in 0..klasordekiTumDosyalar.size - 1) {
                     if (klasordekiTumDosyalar[i].isFile) {
                         var okunanDosyaYolu = klasordekiTumDosyalar[i].absolutePath.toString()
+                        Log.e("DOSYAYOLU", "---->"+okunanDosyaYolu)
                         var dosyaTuru = okunanDosyaYolu.substring(okunanDosyaYolu.lastIndexOf("."))
                         if (dosyaTuru.equals(".jpg") || dosyaTuru.equals(".jpeg") || dosyaTuru.equals(".png") || dosyaTuru.equals(
                                 ".mp4"
@@ -56,6 +58,44 @@ class DosyaIslemleri {
             ResimCompressAsyncTask(fragment).execute(secilenResimYolu)
 
         }
+
+        fun compressVideoDosya(fragment: Fragment, secilenVideoYolu: String) {
+            VideoCompressAsyncTask(fragment)
+        }
+    }
+
+    internal class VideoCompressAsyncTask(fragment: Fragment) : AsyncTask<String, String, String>() {
+        var mFragment = fragment
+        var compressDialog = YukleniyorFragment()
+        override fun doInBackground(vararg params: String?): String? {
+            var yeniOlusanDosyaKlasoru =
+                File(Environment.getExternalStorageDirectory().absolutePath + "/DCIM/compressedVideos/")
+
+            if (yeniOlusanDosyaKlasoru.isDirectory || yeniOlusanDosyaKlasoru.mkdirs()) {
+
+                var yeniDosyaYolu = SiliCompressor.with(mFragment.context)
+                    .compressVideo(params[0].toString(), yeniOlusanDosyaKlasoru.path)
+                return yeniDosyaYolu
+            }
+            return null
+
+        }
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            compressDialog.show(mFragment.activity!!.supportFragmentManager, "compressDialog")
+            compressDialog.isCancelable = false
+
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            if (!result!!.isNullOrEmpty()) {
+                compressDialog.dismiss()
+                (mFragment as ShareNextFragment).uploadToStorage(result)
+            }
+        }
+
     }
 
     internal class ResimCompressAsyncTask(fragment: Fragment) : AsyncTask<String, String, String>() {

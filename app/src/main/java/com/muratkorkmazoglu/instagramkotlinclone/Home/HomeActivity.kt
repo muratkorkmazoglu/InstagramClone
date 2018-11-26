@@ -25,7 +25,7 @@ class HomeActivity : AppCompatActivity() {
         mAuth= FirebaseAuth.getInstance()
         setupAuthListener()
         initImageLoader()
-        setupNavigationView();
+
         setupHomeViewPager();
     }
 
@@ -79,5 +79,10 @@ class HomeActivity : AppCompatActivity() {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
     }
 }

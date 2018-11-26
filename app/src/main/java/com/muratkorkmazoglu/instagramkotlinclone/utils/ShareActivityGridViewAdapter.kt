@@ -84,37 +84,19 @@ class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasord
     }
 
     fun convertDuration(duration: Long): String {
-        var out: String? = null
-        var hours: Long = 0
-        try {
-            hours = duration / 3600000
-        } catch (e: Exception) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-            return out!!
-        }
 
-        val remaining_minutes = (duration - hours * 3600000) / 60000
-        var minutes = remaining_minutes.toString()
-        if (minutes.equals(0)) {
-            minutes = "00"
-        }
-        val remaining_seconds = duration - hours * 3600000 - remaining_minutes * 60000
-        var seconds = remaining_seconds.toString()
-        if (seconds.length < 2) {
-            seconds = "00"
+        var second = duration / 1000 % 60
+        var minute = duration / (1000 * 60) % 60
+        var hour = duration / (1000 * 60 * 60) % 24
+
+        var time = ""
+        if (hour > 0) {
+            time = String.format("%02d:%02d:%02d", hour, minute, second)
         } else {
-            seconds = seconds.substring(0, 2)
+            time = String.format("%02d:%02d", minute, second)
+
         }
-
-        if (hours > 0) {
-            out = hours.toString() + ":" + minutes + ":" + seconds
-        } else {
-            out = "$minutes:$seconds"
-        }
-
-        return out
-
+        return time
     }
 
 

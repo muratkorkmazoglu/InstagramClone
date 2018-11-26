@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 
 import com.muratkorkmazoglu.instagramkotlinclone.R
-import com.muratkorkmazoglu.instagramkotlinclone.utils.DosyaIslemleri
-import com.muratkorkmazoglu.instagramkotlinclone.utils.EventbusDataEvents
-import com.muratkorkmazoglu.instagramkotlinclone.utils.ShareActivityGridViewAdapter
-import com.muratkorkmazoglu.instagramkotlinclone.utils.UniversalImageLoader
+import com.muratkorkmazoglu.instagramkotlinclone.utils.*
 import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.fragment_share_galery.*
 import kotlinx.android.synthetic.main.fragment_share_galery.view.*
@@ -58,7 +56,8 @@ class ShareGaleryFragment : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                setupGridView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
+                //setupGridView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
+                setupRecyclerView(DosyaIslemleri.klasordekiDosyalariGetir(klasorPaths.get(position)))
             }
 
         }
@@ -66,10 +65,12 @@ class ShareGaleryFragment : Fragment() {
 
         view.tvIleriButton.setOnClickListener {
 
-            EventBus.getDefault().postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenResimYolu, dosyaTipiResimMi))
-
             activity!!.anaLayout.visibility = View.GONE
             activity!!.fragmentContainerLayout.visibility = View.VISIBLE
+            EventBus.getDefault()
+                .postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenResimYolu, dosyaTipiResimMi))
+            videoView.stopPlayback()
+
             var transaction = activity!!.supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragmentContainerLayout, ShareNextFragment())
             transaction.addToBackStack(null)
@@ -78,27 +79,50 @@ class ShareGaleryFragment : Fragment() {
 
         }
 
+        view.imgClose.setOnClickListener {
+            activity!!.onBackPressed()
+        }
+
 
 
         return view
     }
 
+    private fun setupRecyclerView(klasordekiDosyalar: java.util.ArrayList<String>) {
+        var recyclerViewAdapter = ShareGaleryRecylerAdapter(klasordekiDosyalar, this.activity!!)
+        recylerViewDosyalar.adapter = recyclerViewAdapter
 
-    fun setupGridView(secilenKlasordekiDosyalar: ArrayList<String>) {
-        var gridAdapter =
-            ShareActivityGridViewAdapter(activity, R.layout.tek_sutun_grid_resim, secilenKlasordekiDosyalar)
-        gridResimler.adapter = gridAdapter
-        secilenResimYolu = secilenKlasordekiDosyalar.get(0)
-        resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(0))
+        var layoutManager = GridLayoutManager(this.activity, 4)
+        recylerViewDosyalar.layoutManager = layoutManager
+        recylerViewDosyalar.setHasFixedSize(true)
+        recylerViewDosyalar.setItemViewCacheSize(30)
+        recylerViewDosyalar.isDrawingCacheEnabled=true
+        recylerViewDosyalar.drawingCacheQuality=View.DRAWING_CACHE_QUALITY_LOW
 
+        var secilenResimYolu = klasordekiDosyalar.get(0)
+        resimVeyaVideoGoster(secilenResimYolu)
 
-        gridResimler.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                secilenResimYolu = secilenKlasordekiDosyalar.get(position)
-                resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(position))
-            }
-        }
     }
+
+
+    /*   fun setupGridView(secilenKlasordekiDosyalar: ArrayList<String>) {
+           var gridAdapter =
+               ShareActivityGridViewAdapter(activity, R.layout.tek_sutun_grid_resim, secilenKlasordekiDosyalar)
+           gridResimler.adapter = gridAdapter
+           if (secilenKlasordekiDosyalar.size > 0){
+               secilenResimYolu = secilenKlasordekiDosyalar.get(0)
+               resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(0))
+           }
+
+
+
+           gridResimler.onItemClickListener = object : AdapterView.OnItemClickListener {
+               override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                   secilenResimYolu = secilenKlasordekiDosyalar.get(position)
+                   resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(position))
+               }
+           }
+       }*/
 
     private fun resimVeyaVideoGoster(dosyaYolu: String) {
         var dosyaTuru = dosyaYolu.substring(dosyaYolu.lastIndexOf("."))

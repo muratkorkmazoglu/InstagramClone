@@ -34,13 +34,16 @@ class ProfileActivity : AppCompatActivity() {
         mUser = mAuth.currentUser!!
         setupAuthListener()
         mRef = FirebaseDatabase.getInstance().reference
-        setupNavigationView()
         setupToolbar()
         kullaniciBilgileriniGetir()
 
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupNavigationView()
+    }
     private fun kullaniciBilgileriniGetir() {
 
         tvProfilDuzenleButton.isEnabled = false
