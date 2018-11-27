@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.muratkorkmazoglu.instagramkotlinclone.R
 import kotlinx.android.synthetic.main.tek_sutun_grid_resim.view.*
+import org.greenrobot.eventbus.EventBus
 
 class ShareGaleryRecylerAdapter(var klasordekiDosyalar: ArrayList<String>, var mContext: Context) :
     RecyclerView.Adapter<ShareGaleryRecylerAdapter.MyViewHolder>() {
@@ -57,6 +58,9 @@ class ShareGaleryRecylerAdapter(var klasordekiDosyalar: ArrayList<String>, var m
                     holder.progressBar,
                     "file:/"
                 )
+            }
+            holder.tekSutunDosya.setOnClickListener {
+                EventBus.getDefault().post(EventbusDataEvents.GalerySecilenDosyaYolunuGonder(dosyaYolu))
             }
         }
     }

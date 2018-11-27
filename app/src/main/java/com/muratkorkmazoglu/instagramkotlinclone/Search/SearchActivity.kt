@@ -14,14 +14,14 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setupNavigationView();
+        //setupNavigationView();
     }
 
-    fun setupNavigationView(){
+  /*  fun setupNavigationView(){
         BottomNavigatinViewHelper.setupBottomNavigationView(bottomNavigationView);
         BottomNavigatinViewHelper.setupNavigation(this,bottomNavigationView);
         var menu=bottomNavigationView.menu;
         var menuItem=menu.getItem(activity_no);
         menuItem.setChecked(true);
-    }
+    }*/
 }

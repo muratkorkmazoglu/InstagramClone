@@ -15,6 +15,7 @@ import com.muratkorkmazoglu.instagramkotlinclone.R.id.imgTekSutunImage
 import kotlinx.android.synthetic.main.fragment_share_galery.*
 import kotlinx.android.synthetic.main.tek_sutun_grid_resim.view.*
 import java.util.zip.Inflater
+/*
 
 class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasordekiDosyalar: ArrayList<String>?) :
     ArrayAdapter<String>(context, resource, klasordekiDosyalar) {
@@ -100,4 +101,5 @@ class ShareActivityGridViewAdapter(context: Context?, resource: Int, var klasord
     }
 
 
-}
+
+}*/

@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <TextView
-            android:text="CameraFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"/>
-</android.support.constraint.ConstraintLayout>
+    <com.otaliastudios.cameraview.CameraView android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:id="@+id/cameraView"
+                                             app:cameraFlash="auto"
+                                             app:cameraSessionType="picture"
+                                             app:cameraWhiteBalance="auto"
+                                             app:cameraJpegQuality="100"
+                                             app:cameraPlaySounds="true" app:layout_constraintTop_toTopOf="parent"
+                                             app:layout_constraintEnd_toEndOf="parent"
+                                             app:layout_constraintStart_toStartOf="parent"
+                                             app:layout_constraintBottom_toBottomOf="parent"/>
+    <android.support.constraint.ConstraintLayout android:layout_width="match_parent"
+                                                 android:layout_height="100dp"
+                                                 android:id="@+id/tasiyici"
+                                                 android:layout_gravity="bottom">
+
+
+        <ImageView android:layout_width="60dp" android:layout_height="60dp"
+                   android:src="@drawable/foto_cek_yuvarlak" app:layout_constraintEnd_toEndOf="parent"
+                   android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+                   android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+                   app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+                   app:layout_constraintTop_toTopOf="parent" android:id="@+id/imgFotoCek"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_camera_switch"
+                android:id="@+id/imgCameraSwitch" android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="24dp"/>
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

@@ -1,12 +1,12 @@
 package com.muratkorkmazoglu.instagramkotlinclone.Share
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +19,13 @@ import kotlinx.android.synthetic.main.activity_share.*
 import kotlinx.android.synthetic.main.fragment_share_galery.*
 import kotlinx.android.synthetic.main.fragment_share_galery.view.*
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 
 class ShareGaleryFragment : Fragment() {
 
 
-    var secilenResimYolu: String? = null
+    var secilenDosyaYolu: String? = null
     var dosyaTipiResimMi: Boolean? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,7 +69,7 @@ class ShareGaleryFragment : Fragment() {
             activity!!.anaLayout.visibility = View.GONE
             activity!!.fragmentContainerLayout.visibility = View.VISIBLE
             EventBus.getDefault()
-                .postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenResimYolu, dosyaTipiResimMi))
+                .postSticky(EventbusDataEvents.PaylasilacakResmiGonder(secilenDosyaYolu, dosyaTipiResimMi))
             videoView.stopPlayback()
 
             var transaction = activity!!.supportFragmentManager.beginTransaction()
@@ -99,30 +100,11 @@ class ShareGaleryFragment : Fragment() {
         recylerViewDosyalar.isDrawingCacheEnabled=true
         recylerViewDosyalar.drawingCacheQuality=View.DRAWING_CACHE_QUALITY_LOW
 
-        var secilenResimYolu = klasordekiDosyalar.get(0)
-        resimVeyaVideoGoster(secilenResimYolu)
+        secilenDosyaYolu = klasordekiDosyalar.get(0)
+        resimVeyaVideoGoster(secilenDosyaYolu!!)
 
     }
 
-
-    /*   fun setupGridView(secilenKlasordekiDosyalar: ArrayList<String>) {
-           var gridAdapter =
-               ShareActivityGridViewAdapter(activity, R.layout.tek_sutun_grid_resim, secilenKlasordekiDosyalar)
-           gridResimler.adapter = gridAdapter
-           if (secilenKlasordekiDosyalar.size > 0){
-               secilenResimYolu = secilenKlasordekiDosyalar.get(0)
-               resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(0))
-           }
-
-
-
-           gridResimler.onItemClickListener = object : AdapterView.OnItemClickListener {
-               override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                   secilenResimYolu = secilenKlasordekiDosyalar.get(position)
-                   resimVeyaVideoGoster(secilenKlasordekiDosyalar.get(position))
-               }
-           }
-       }*/
 
     private fun resimVeyaVideoGoster(dosyaYolu: String) {
         var dosyaTuru = dosyaYolu.substring(dosyaYolu.lastIndexOf("."))
@@ -141,5 +123,21 @@ class ShareGaleryFragment : Fragment() {
                 UniversalImageLoader.setImage(dosyaYolu, imgCropView, null, "file:/")
             }
         }
+    }
+
+    @Subscribe
+    internal fun onSecilenResimEvent(secilenDosya: EventbusDataEvents.GalerySecilenDosyaYolunuGonder) {
+        this.secilenDosyaYolu = secilenDosya.dosyaYolu!!
+        resimVeyaVideoGoster(secilenDosyaYolu!!)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        EventBus.getDefault().unregister(this)
     }
 }

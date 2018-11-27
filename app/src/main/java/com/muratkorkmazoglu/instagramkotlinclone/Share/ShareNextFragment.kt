@@ -3,6 +3,7 @@ package com.muratkorkmazoglu.instagramkotlinclone.Share
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -22,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.OnProgressListener
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.muratkorkmazoglu.instagramkotlinclone.Home.HomeActivity
 import com.muratkorkmazoglu.instagramkotlinclone.Model.Posts
 import com.muratkorkmazoglu.instagramkotlinclone.Profile.YukleniyorFragment
 
@@ -54,7 +56,7 @@ class ShareNextFragment : Fragment() {
 
         UniversalImageLoader.setImage(secilenResimYolu!!, view.imgSecilenResim, null, "file:/")
 
-        //photoURI = Uri.parse("file://" + secilenResimYolu)
+        //photoURI = Uri.parse("file://" + secilenDosyaYolu)
 
         mAuth = FirebaseAuth.getInstance()
         mUser = mAuth.currentUser!!
@@ -69,9 +71,11 @@ class ShareNextFragment : Fragment() {
                 DosyaIslemleri.compressResimDosya(this, secilenResimYolu)
             } else {
                 DosyaIslemleri.compressVideoDosya(this, secilenResimYolu!!)
-
             }
 
+        }
+        view.icBack.setOnClickListener {
+            this.activity!!.onBackPressed()
         }
 
         return view
@@ -117,6 +121,9 @@ class ShareNextFragment : Fragment() {
         var yuklenenPost = Posts(mUser.uid, postId, "", etAciklama.text.toString(), downloadUrl)
         mRef.child("posts").child(mUser.uid).child(postId).setValue(yuklenenPost)
         mRef.child("posts").child(mUser.uid).child(postId).child("yuklenme_tarih").setValue(ServerValue.TIMESTAMP)
+
+        var intent= Intent(activity,HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+        startActivity(intent)
     }
 
     @Subscribe(sticky = true)
